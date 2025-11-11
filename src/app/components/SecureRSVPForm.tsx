@@ -127,6 +127,7 @@ export default function SecureRSVPForm() {
         setSubmitMessage(sanitizeHTML(data.error || 'Something went wrong. Please try again.'))
       }
     } catch (error) {
+      console.error('Fetch error:', error)
       setSubmitStatus('error')
       setSubmitMessage('Failed to submit RSVP. Please check your connection and try again.')
     } finally {
