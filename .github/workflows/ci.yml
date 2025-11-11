@@ -28,7 +28,9 @@ jobs:
       - name: Install deps
         run: pnpm install
 
-      # Prisma sanity
+      - name: Set DATABASE_URL environment variable (if not already set)
+        run: export DATABASE_URL=${{ secrets.DATABASE_URL }}
+
       - name: Prisma format + generate + validate
         run: |
           npx prisma format
@@ -40,9 +42,6 @@ jobs:
 
       - name: Typecheck
         run: pnpm tsc --noEmit
-
-      - name: Set DATABASE_URL environment variable
-        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
 
       - name: Next.js build
         env:
