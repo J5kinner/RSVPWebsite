@@ -10,10 +10,11 @@ export async function GET() {
       ORDER BY "respondedAt" DESC
     `
     return NextResponse.json(rsvps)
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching RSVPs:', error)
+    const message = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json(
-      { error: 'Failed to fetch RSVPs: ' + (error.message || 'Unknown error') },
+      { error: 'Failed to fetch RSVPs: ' + message },
       { status: 500 }
     )
   }
@@ -51,10 +52,11 @@ export async function POST(request: NextRequest) {
     
     const rsvp = result[0]
     return NextResponse.json(rsvp, { status: 201 })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error creating RSVP:', error)
+    const message = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json(
-      { error: 'Failed to create RSVP: ' + (error.message || 'Unknown error') },
+      { error: 'Failed to create RSVP: ' + message },
       { status: 500 }
     )
   }

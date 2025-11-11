@@ -130,7 +130,7 @@ export default function RSVPList() {
                       </p>
                     )}
                     {rsvp.message && (
-                      <p className="text-sm text-gray-700 italic mt-2">"{rsvp.message}"</p>
+                      <p className="text-sm text-gray-700 italic mt-2">&quot;{rsvp.message}&quot;</p>
                     )}
                   </div>
                   <span className="text-xs text-gray-500" suppressHydrationWarning>
