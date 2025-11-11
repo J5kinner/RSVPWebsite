@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect } from 'react'
-import { validateRSVPData, sanitizeHTML, createSafeErrorMessage } from '@/lib/security'
+import { validateRSVPData, sanitizeHTML } from '@/lib/security'
 import { csrfProtector } from '@/lib/csrf'
 
 interface FormErrors {
@@ -59,7 +59,6 @@ export default function SecureRSVPForm() {
     const validationData = { ...formData, [fieldName]: value }
     const result = validateRSVPData(validationData)
     
-    // Only update error for the specific field being validated
     const fieldError = result.errors[fieldName]
     setFormErrors(prev => ({
       ...prev,
@@ -77,7 +76,6 @@ export default function SecureRSVPForm() {
       setFormErrors(prev => ({ ...prev, [field]: '' }))
     }
     
-    // Validate on blur or when field has existing error
     if (value && (formErrors[field] || value.toString().length > 2)) {
       validateField(field, value)
     }
@@ -86,7 +84,6 @@ export default function SecureRSVPForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    // Validate all fields
     const validationResult = validateRSVPData(formData)
     
     if (!validationResult.isValid) {
@@ -116,7 +113,6 @@ export default function SecureRSVPForm() {
       if (response.ok) {
         setSubmitStatus('success')
         setSubmitMessage('Thank you for your RSVP!')
-        // Reset form with sanitized data
         setFormData({
           name: '',
           email: '',

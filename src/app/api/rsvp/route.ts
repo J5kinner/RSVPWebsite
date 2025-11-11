@@ -11,7 +11,6 @@ const sql = neon(process.env.DATABASE_URL!)
  * Fetches all RSVP responses with security headers
  */
 export async function GET() {
-  // Apply rate limiting for GET requests
   const clientId = getClientId(new Request('http://localhost:3000/api/rsvp', { method: 'GET' }))
   const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIGS.rsvpRead)
   
@@ -75,7 +74,6 @@ export async function POST(request: NextRequest) {
     )
   }
 
-  // Apply strict rate limiting for POST requests
   const clientId = getClientId(request)
   const rateLimitResult = checkRateLimit(clientId, RATE_LIMIT_CONFIGS.rsvp)
   
@@ -100,7 +98,6 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    // Add request size limit (1MB)
     const contentLength = request.headers.get('content-length')
     if (contentLength && parseInt(contentLength) > 1048576) {
       return NextResponse.json(
@@ -113,9 +110,6 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    
-    // Comprehensive server-side validation
-    // Verify CSRF token for POST requests
     const csrfToken = getCSRFTokenFromRequest(request)
     if (!csrfToken) {
       return NextResponse.json(
@@ -143,8 +137,6 @@ export async function POST(request: NextRequest) {
     }
 
     const { sanitizedData } = validationResult
-
-    // Enhanced SQL with better error handling and security
     const result = await sql`
       INSERT INTO rsvps (id, name, email, attending, "numberOfGuests", "dietaryNotes", message, "respondedAt", "updatedAt")
       VALUES (gen_random_uuid()::text, ${sanitizedData.name}, ${sanitizedData.email}, ${sanitizedData.attending}, ${sanitizedData.numberOfGuests}, ${sanitizedData.dietaryNotes || null}, ${sanitizedData.message || null}, NOW(), NOW())
@@ -173,7 +165,6 @@ export async function POST(request: NextRequest) {
   } catch (error: unknown) {
     console.error('Error creating/updating RSVP:', error)
     
-    // Handle specific database errors with safe messages
     const errorMessage = createSafeErrorMessage(error)
     
     return NextResponse.json(
