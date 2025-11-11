@@ -10,7 +10,7 @@ export default function Home() {
             Wedding RSVP
           </h1>
           <p className="text-lg text-gray-600">
-            Please let us know if you'll be joining us for our special day!
+            Please let us know if you&apos;ll be joining us for our special day!
           </p>
         </div>
 

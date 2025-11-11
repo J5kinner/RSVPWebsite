@@ -57,7 +57,7 @@ export default function RSVPForm() {
         setSubmitStatus('error')
         setSubmitMessage(data.error || 'Something went wrong. Please try again.')
       }
-    } catch (error) {
+    } catch {
       setSubmitStatus('error')
       setSubmitMessage('Failed to submit RSVP. Please try again.')
     } finally {
@@ -110,7 +110,7 @@ export default function RSVPForm() {
               onChange={() => setFormData({ ...formData, attending: true })}
               className="mr-2"
             />
-            Yes, I'll be there!
+            Yes, I&apos;ll be there!
           </label>
           <label className="flex items-center">
             <input
@@ -120,7 +120,7 @@ export default function RSVPForm() {
               onChange={() => setFormData({ ...formData, attending: false })}
               className="mr-2"
             />
-            Sorry, can't make it
+            Sorry, can&apos;t make it
           </label>
         </div>
       </div>
